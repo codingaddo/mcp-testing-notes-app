@@ -1,23 +1,20 @@
-# MCP Testing Notes App - Backend
+# MCP Testing Notes App
 
-This repository contains the backend implementation for the MCP Testing Notes App v1, built with FastAPI and SQLite.
+Backend and frontend for a simple Notes application used to test MCP integrations.
 
-## Backend Setup
+## Backend (FastAPI)
 
-This project is configured to use [uv](https://github.com/astral-sh/uv) as the Python package manager.
+The backend is implemented with FastAPI and SQLite.
 
-### Prerequisites
+### Setup
 
-- Python 3.11+
-- `uv` installed (`pip install uv` or follow the official docs)
-
-### Install dependencies
+We use [uv](https://github.com/astral-sh/uv) to manage the Python environment and dependencies.
 
 ```bash
 uv sync
 ```
 
-### Run the API server
+### Run the backend server
 
 ```bash
 uv run uvicorn app.main:app --reload
@@ -25,21 +22,39 @@ uv run uvicorn app.main:app --reload
 
 The API will be available at `http://localhost:8000`.
 
-### Run tests
+### Run backend tests
 
 ```bash
 uv run pytest
 ```
 
-### Notes API Base URL
+### Notes API
 
-All Notes endpoints are available under:
+Base path: `http://localhost:8000/api/v1/notes`
 
-- Base URL: `http://localhost:8000`
-- Notes path prefix: `/api/v1/notes`
+- `POST /api/v1/notes/` – Create a note. Body: `{ "content": "your note" }` (max 500 chars, non-empty after trimming).
+- `GET /api/v1/notes/` – List notes ordered by `created_at` descending.
+- `DELETE /api/v1/notes/{note_id}` – Delete a note by ID. Returns 404 if not found.
 
-Example endpoints:
+## Frontend (Next.js + TypeScript)
 
-- `POST /api/v1/notes/` – create a note
-- `GET /api/v1/notes/` – list notes
-- `DELETE /api/v1/notes/{note_id}` – delete a note
+The frontend lives in the [`frontend/`](frontend/README.md) directory and is built with Next.js, TypeScript, and Tailwind CSS.
+
+### Quick start
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will be available at `http://localhost:3000` and expects the backend to be running at `http://localhost:8000`.
+
+### Frontend tests
+
+```bash
+cd frontend
+npm test
+```
+
+For more details, see [frontend/README.md](frontend/README.md).
