@@ -1,0 +1,17 @@
+[project]
+name = "mcp-testing-notes-app-backend"
+version = "0.1.0"
+description = "Notes App v1 backend using FastAPI and SQLite"
+requires-python = ">=3.11"
+
+[project.dependencies]
+fastapi = "^0.115.0"
+uvicorn = "^0.30.0"
+sqlalchemy = "^2.0.0"
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx", "pytest-asyncio"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
