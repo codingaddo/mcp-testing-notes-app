@@ -1,16 +1,29 @@
+from __future__ import annotations
+
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
 
-class NoteCreate(BaseModel):
-    content: str = Field(..., max_length=500, description="Content of the note (max 500 characters)")
+class NoteBase(BaseModel):
+    title: str = Field(..., min_length=1, max_length=200)
+    content: str = Field(..., min_length=1, max_length=5000)
 
 
-class NoteOut(BaseModel):
+class NoteCreate(NoteBase):
+    pass
+
+
+class NoteUpdate(BaseModel):
+    title: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    content: Optional[str] = Field(default=None, min_length=1, max_length=5000)
+
+
+class NoteRead(NoteBase):
     id: int
-    content: str
     created_at: datetime
+    updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -1,11 +1,21 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from __future__ import annotations
 
-from .database import Base
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from typing import Optional
 
 
-class Note(Base):
-    __tablename__ = "notes"
+@dataclass
+class Note:
+    id: int
+    title: str
+    content: str
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
-    id = Column(Integer, primary_key=True, index=True)
-    content = Column(String(500), nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    def update(self, *, title: Optional[str] = None, content: Optional[str] = None) -> None:
+        if title is not None:
+            self.title = title
+        if content is not None:
+            self.content = content
+        self.updated_at = datetime.now(timezone.utc)

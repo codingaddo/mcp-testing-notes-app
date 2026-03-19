@@ -1,12 +1,12 @@
 from fastapi import FastAPI
+from app.routers.notes import router as notes_router
 
-from .routers import notes
-
-app = FastAPI(title="MCP Testing Notes App API", version="1.0.0")
-
-app.include_router(notes.router, prefix="/api/v1")
+app = FastAPI(title="MCP Testing Notes App")
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> dict:
     return {"status": "ok"}
+
+
+app.include_router(notes_router, prefix="/notes", tags=["notes"])
